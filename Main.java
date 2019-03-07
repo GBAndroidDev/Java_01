@@ -1,130 +1,184 @@
 package gb.education;
 
-import java.util.Random;
-import java.util.Scanner;
-
 public class Main {
     public static void main (String[] args) {
-        //guessNumber();
-        guessWord();
+
+        System.out.println("Java 1 - Урок 2");
+
+        recursiveArray();
+        fillArray();
+        task3();
+        task4();
+        task5();
+        System.out.println(task6(new int[] {2, 2, 2, 1, 2, 2, 10, 1}));
+        task7(new int[] {1,2,3,4,5}, 2);
     }
 
-    //Написать программу, которая загадывает случайное число от 0 до 9 и пользователю дается 3
-    //попытки угадать это число. При каждой попытке компьютер должен сообщить, больше ли
-    //указанное пользователем число, чем загаданное, или меньше. После победы или проигрыша
-    //выводится запрос – «Повторить игру еще раз? 1 – да / 0 – нет»(1 – повторить, 0 – нет).
-    public static void guessNumber() {
-        boolean flag = true;
-        Scanner scanner = new Scanner(System.in);
-        while (flag) {
-            System.out.println("Угадай число от 0 до 9.");
-            int n = 3;
-            Random rand = new Random();
-            int randNum = rand.nextInt (10);
-            for (int i = 1; i <= n; i++) {
-                System.out.print("Попытка " + i + ": ");
-                int num = scanner.nextInt();
-                if (num == randNum) {
-                    System.out.println("Вы угадали!");
-                    break;
-                } else if (i == n) {
-                    System.out.println("Игра окончена. Вы не справились.");
-                } else if (randNum > num) {
-                    System.out.println("Загаданое чилсло больше.");
-                } else if (randNum < num) {
-                    System.out.println("Загаданое чилсло меньше.");
-                }
-            }
-            System.out.print("Повторить игру еще раз? 1 – да / 0 – нет: ");
-            int exitGame = scanner.nextInt();
-            if (exitGame == 0) {
-                System.out.println("Спасибо за игру. Пока!");
-                flag = false;
-            }
+    //вывод массива (не относится к ДЗ)
+    public static void printArray(int[] myArray) {
+        for (int i = 0; i < myArray.length; i++) {
+            System.out.print(myArray[i] + " ");
         }
-        scanner.close();
         System.out.println();
     }
 
-    //2 * Создать массив из слов
-    //String[] words = {"apple", "orange", "lemon", "banana", "apricot", "avocado", "broccoli", "carrot",
-    //"cherry", "garlic", "grape", "melon", "leak", "kiwi", "mango", "mushroom", "nut", "olive", "pea",
-    //"peanut", "pear", "pepper", "pineapple", "pumpkin", "potato"}.
-    //При запуске программы компьютер загадывает слово, запрашивает ответ у пользователя,
-    //сравнивает его с загаданным словом и сообщает, правильно ли ответил пользователь. Если
-    //слово не угадано, компьютер показывает буквы, которые стоят на своих местах.
-    //apple – загаданное
-    //apricot - ответ игрока
-    //ap############# (15 символов, чтобы пользователь не мог узнать длину слова)
-    //Для сравнения двух слов посимвольно можно пользоваться:
-    //String str = "apple";
-    //char a = str.charAt(0); - метод, вернет char, который стоит в слове str на первой позиции
-    //Играем до тех пор, пока игрок не отгадает слово.
-    //Используем только маленькие буквы.
-    public static void guessWord() {
-        System.out.println("Угадай слово.");
-        boolean flag = true;
-        int i = 0, strMinLength = 0, k = 0;
-        String yourWord, guessStr = "", maxGuessStr = "", resMaxGuessStr = "";
-        String[] words = {"apple", "orange", "lemon", "banana", "apricot", "avocado", "broccoli", "carrot",
-                "cherry", "garlic", "grape", "melon", "leak", "kiwi", "mango", "mushroom", "nut", "olive", "pea",
-                "peanut", "pear", "pepper", "pineapple", "pumpkin", "potato"};
-        Scanner scanner = new Scanner(System.in);
+    //вывод массива (не относится к ДЗ)
+    public static void printArray(int[][] myArray) {
+        for(int i = 0; i < myArray.length; i++) {
+            for (int j = 0; j < myArray[i].length; j++) {
+                System.out.print(myArray[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
 
-        /*for (i = 1; i < words[0].length() - 1; i++) {
-            System.out.print(words[0].charAt(i) + " ");
-        }*/
+    //1. Задать целочисленный массив, состоящий из элементов 0 и 1. Например: [ 1, 1, 0, 0, 1, 0, 1, 1,
+    //0, 0 ]. С помощью цикла и условия заменить 0 на 1, 1 на 0;
+    public static void recursiveArray() {
+        System.out.println("Задача 2:");
+        int sourceArray[] = {1,1,0,0,1,0,1,1,0,0};
+        printArray(sourceArray);
+        for (int i = 0; i < sourceArray.length; i++) {
 
-        do {
-            i++;
-            System.out.print("Ваш вариант ("+ i + "): ");
-            yourWord = scanner.next();
-            for (String arrayWord: words) {
-                if (yourWord.equals(arrayWord)) {
-                    flag = false;
-                    break;
-                } else {
+            if (sourceArray[i] == 1) {
+                sourceArray[i] = 0;
+            } else if (sourceArray[i] == 0) {
+                sourceArray[i] = 1;
+            }
+        }
+        printArray(sourceArray);
+    }
 
-                    if (yourWord.length() < arrayWord.length()) {
-                        strMinLength = yourWord.length();
+    //2. Задать пустой целочисленный массив размером 8. С помощью цикла заполнить его
+    //значениями 0 3 6 9 12 15 18 21;
+    public static void fillArray() {
+        System.out.println("Задача 2:");
+        int myArray[] = new int[8];
+        int k = 0;
+        for (int i = 0; i < myArray.length; i++) {
+            myArray[i] = k;
+            k += 3;
+        }
+        printArray(myArray);
+    }
+
+    //3. Задать массив [ 1, 5, 3, 2, 11, 4, 5, 2, 4, 8, 9, 1 ] пройти по нему циклом, и числа меньшие 6
+    //умножить на 2;
+    public static void task3() {
+        System.out.println("Задача 3:");
+        int myArray[] = {1, 5, 3, 2, 11, 4, 5, 2, 4, 8, 9, 1};
+        printArray(myArray);
+        for (int i = 0; i < myArray.length; i++) {
+            if (myArray[i] < 6) {
+                myArray[i] = myArray[i] * 2;
+            }
+        }
+        printArray(myArray);
+    }
+
+    //4. Создать квадратный двумерный целочисленный массив (количество строк и столбцов
+    //одинаковое), и с помощью цикла(-ов) заполнить его диагональные элементы единицами;
+    public static void task4() {
+        System.out.println("Задача 4:");
+        int SIZE_X = 5;
+        int SIZE_Y = 5;
+        int myArray[][] = new int[SIZE_X][SIZE_Y];
+        for (int i = 0; i < SIZE_X; i++) {
+                myArray[i][i] = 1;
+                myArray[i][4 - i] = 1;
+        }
+        printArray(myArray);
+    }
+
+    //5. ** Задать одномерный массив и найти в нем минимальный и максимальный элементы (без
+    //помощи интернета);
+    public static void task5() {
+        System.out.println("Задача 5:");
+        int myArray[] = {1,5,-4,8,12};
+        printArray(myArray);
+        int min = 0, max = 0;
+        for (int i = 0; i < myArray.length; i++) {
+            if (myArray[i] < min) {
+                min = myArray[i];
+            }
+            if (myArray[i] > max) {
+                max = myArray[i];
+            }
+        }
+        System.out.println("Min: " + min);
+        System.out.println("Max: " + max);
+    }
+
+    //** Написать метод, в который передается не пустой одномерный целочисленный массив,
+    //метод должен вернуть true, если в массиве есть место, в котором сумма левой и правой части
+    //массива равны. Примеры: checkBalance([2, 2, 2, 1, 2, 2, || 10, 1]) → true, checkBalance([1, 1, 1, ||
+    //2, 1]) → true, граница показана символами ||, эти символы в массив не входят.
+    public static boolean task6(int myArray[]) {
+        System.out.println("Задача 6:");
+        boolean res = false;
+        int leftSum, rightSum , k, j;
+        int equalityPosition = 1; //позиция коретки
+        for (int i = 0; i < myArray.length; i++) {
+            equalityPosition++;
+            leftSum = 0;
+            rightSum = 0;
+            for (k = 0; k <= i; k++) {
+                leftSum += myArray[k];
+            }
+            //System.out.print("Сумма слева: " + leftSum + ", ");
+            for (j = i+1; j < myArray.length; j++) {
+                rightSum += myArray[j];
+            }
+            //System.out.println("сумма справа: " + rightSum + ".");
+            if (rightSum == leftSum) {
+                System.out.println("Место равенстава в массиве: " + equalityPosition + "-й элемент.");
+                res = true;
+                break;
+            }
+        }
+        return res;
+    }
+
+    //7. **** Написать метод, которому на вход подается одномерный массив и число n (может быть
+    //положительным, или отрицательным), при этом метод должен сместить все элементы
+    //массива на n позиций. Для усложнения задачи нельзя пользоваться вспомогательными
+    //массивами.
+    public static void task7(int myArray[], int n) {
+        System.out.println("Задача 7:");
+        int cacheValue;
+
+        if (n > 0) {
+            for (int j = 1; j <= n; j++) {
+                cacheValue = myArray[myArray.length-1];
+                for (int i = myArray.length - 1; i >= 0; i--) {
+
+                    if (i > 0) {
+                        myArray[i] = myArray[i-1];
                     } else {
-                        strMinLength = arrayWord.length();
-                    }
-
-                    for (k = 0; k < strMinLength; k++) {
-                        if (yourWord.charAt(k) == arrayWord.charAt(k)) {
-                            guessStr += yourWord.charAt(k);
-                        } else {
-                            break;
-                        }
-                        if (guessStr.length() >= maxGuessStr.length()) {
-                            maxGuessStr = guessStr;
-                            //System.out.println(maxGuessStr);
-                        }
+                        myArray[0] = cacheValue;
                     }
 
                 }
-                if (maxGuessStr.length() >= resMaxGuessStr.length()) {
-                    resMaxGuessStr = maxGuessStr;
-                    guessStr = "";
-                    maxGuessStr = "";
-                    System.out.print("Наиболее подходящий вариант: " + resMaxGuessStr);
-                    for (int j = resMaxGuessStr.length(); j <= 15; j++) {
-                        System.out.print("#");
-                    }
-                    System.out.println();
-                    break;
-                }
-                else {
-                    guessStr = "";
-                }
+                //printArray(myArray);
             }
+            printArray(myArray);
+        } else if (n < 0) {
+            for (int j = 1; j <= n*(-1); j++) {
+                cacheValue = myArray[0];
+                for (int i = 0; i < myArray.length ; i++) {
 
-            if (!flag) {
-                System.out.println("Вы угадали. Молодец!");
+                    if (i + 1 < myArray.length) {
+                        myArray[i] = myArray[i+1];
+                    } else {
+                        myArray[i] = cacheValue;
+                    }
+
+                }
+                //printArray(myArray);
             }
-
-        } while (flag);
-        scanner.close();
+            printArray(myArray);
+        } else {
+            printArray(myArray);
+        }
     }
 }
