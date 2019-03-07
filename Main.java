@@ -85,7 +85,7 @@ public class Main {
         int myArray[][] = new int[SIZE_X][SIZE_Y];
         for (int i = 0; i < SIZE_X; i++) {
                 myArray[i][i] = 1;
-                myArray[i][4 - i] = 1;
+                myArray[i][SIZE_Y - i - 1] = 1;
         }
         printArray(myArray);
     }
