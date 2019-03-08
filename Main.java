@@ -1,5 +1,6 @@
 package gb.education;
 
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -64,7 +65,7 @@ public class Main {
     public static void guessWord() {
         System.out.println("Угадай слово.");
         boolean flag = true;
-        int i = 0, strMinLength = 0, k = 0;
+        int i = 0, strMaxLength = 0, k = 0;
         String yourWord, guessStr = "", maxGuessStr = "", resMaxGuessStr = "";
         String[] words = {"apple", "orange", "lemon", "banana", "apricot", "avocado", "broccoli", "carrot",
                 "cherry", "garlic", "grape", "melon", "leak", "kiwi", "mango", "mushroom", "nut", "olive", "pea",
@@ -74,51 +75,21 @@ public class Main {
         /*for (i = 1; i < words[0].length() - 1; i++) {
             System.out.print(words[0].charAt(i) + " ");
         }*/
-
+        System.out.println("Я (ПК) знаю несколько овощей и фруктов. Я загадал одно. Попробуй угадать. ");
+        Random rand = new Random();
+        int randNum = rand.nextInt(words.length - 1);
+        guessStr = "pea";//words[randNum];
+        System.out.println(guessStr);
         do {
             i++;
-            System.out.print("Ваш вариант ("+ i + "): ");
+            System.out.print("Ваш вариант (" + i + "): ");
             yourWord = scanner.next();
-            for (String arrayWord: words) {
-                if (yourWord.equals(arrayWord)) {
-                    flag = false;
-                    break;
-                } else {
-
-                    if (yourWord.length() < arrayWord.length()) {
-                        strMinLength = yourWord.length();
-                    } else {
-                        strMinLength = arrayWord.length();
-                    }
-
-                    for (k = 0; k < strMinLength; k++) {
-                        if (yourWord.charAt(k) == arrayWord.charAt(k)) {
-                            guessStr += yourWord.charAt(k);
-                        } else {
-                            break;
-                        }
-                        if (guessStr.length() >= maxGuessStr.length()) {
-                            maxGuessStr = guessStr;
-                            //System.out.println(maxGuessStr);
-                        }
-                    }
-
-                }
-                if (maxGuessStr.length() >= resMaxGuessStr.length()) {
-                    resMaxGuessStr = maxGuessStr;
-                    guessStr = "";
-                    maxGuessStr = "";
-                    System.out.print("Наиболее подходящий вариант: " + resMaxGuessStr);
-                    for (int j = resMaxGuessStr.length(); j <= 15; j++) {
-                        System.out.print("#");
-                    }
-                    System.out.println();
-                    break;
-                }
-                else {
-                    guessStr = "";
-                }
+            if (yourWord.equals(guessStr)) {
+                flag = false;
+            } else {
+                System.out.println(getFindStrPart(yourWord,guessStr));
             }
+
 
             if (!flag) {
                 System.out.println("Вы угадали. Молодец!");
@@ -127,4 +98,62 @@ public class Main {
         } while (flag);
         scanner.close();
     }
+
+    public static String getFindStrPart(String userStr, String pcStr) {
+        String result = "";
+        String inSearchLine, matchStr;
+        boolean whoLonger = true; // true длинее строка пользователя; false - длинее загаданная строка.
+        int userWordLength = userStr.length();
+        int pcWordLength = pcStr.length();
+        if (userWordLength > pcWordLength) {
+            inSearchLine = userStr;
+            matchStr = pcStr;
+        } else {
+            inSearchLine = pcStr;
+            matchStr = userStr;
+            whoLonger = false;
+        }
+        String tmpStr = "" + matchStr;
+        int i = 0;
+        boolean flag = true;
+        while (flag) {
+            if (inSearchLine.indexOf(matchStr.substring(i,matchStr.length())) != -1) {
+                result = changdeChars(inSearchLine, i,matchStr.length() - 1, whoLonger);
+                break;
+            }
+            if (inSearchLine.indexOf(matchStr.substring(0,matchStr.length() - i)) != -1) {
+                result = changdeChars(inSearchLine,0,matchStr.length() - 1 - i, whoLonger);
+                break;
+            }
+            if (i > inSearchLine.length()) {
+                flag = false;
+            }
+            i++;
+        }
+
+        return result;
+    }
+
+    public static String changdeChars(String str, int begin, int end, boolean flag) {
+        StringBuilder newStr = new StringBuilder();
+        if (flag) {
+            for (int i = 0; i < str.length(); i++) {
+                if (i >= begin && i <= end) {
+                    newStr.append(str.charAt(i));
+                } else {
+                    newStr.append("#");
+                }
+            }
+        } else {
+            for (int i = 0; i < str.length(); i++) {
+                if (i < begin || i > end) {
+                    newStr.append(str.charAt(i));
+                } else {
+                    newStr.append("#");
+                }
+            }
+        }
+        return newStr.toString();
+    }
+
 }
