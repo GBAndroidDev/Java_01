@@ -2,9 +2,9 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
-    private static int SIZE_X = 3;
-    private static int SIZE_Y = 3;
-    private static int SIZW_WIN = 3;
+    private static int SIZE_X = 5;
+    private static int SIZE_Y = 5;
+    private static int SIZE_WIN = 3;
     private static char USER_DOT = 'X';
     private static char AI_DOT = 'O';
     private static char EMPTY_DOT = '*';
@@ -49,7 +49,8 @@ public class Main {
     }
 
     private static void playerStep() {
-        System.out.println("Ваш ход. Введите X Y (от 1 до 3): ");
+        int max = (SIZE_X > SIZE_Y) ? SIZE_X : SIZE_Y;
+        System.out.println("Ваш ход. Введите X Y (от 1 до " + max + "): ");
         int x, y;
         do {
             x = scanner.nextInt() - 1;
@@ -81,31 +82,99 @@ public class Main {
         return true;
     }
 
-    private static boolean checkWin(char symb) {
-        int checkHLine = 0;
-        int checkVLine = 0;
+    private static boolean checkDULine(char symb) {
         int checkDULine = 0;
+        boolean flag = false;
+        for (int i = 0; i < SIZE_Y; i++) {
+            for (int j = 0; j < SIZE_X; j++) {
+                if (SIZE_Y - i - 1 == j && myTicTacToe[i][j] == symb) {
+                    flag = true;
+                } else {
+                    flag = false;
+                    checkDULine = 0;
+                }
+                if (flag) {
+                    checkDULine++;
+                }
+                if (checkDULine >= SIZE_WIN) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private static boolean checkUDLine(char symb) {
         int checkUDLine = 0;
+        boolean flag = false;
         for (int i = 0; i < SIZE_Y; i++) {
             for (int j = 0; j < SIZE_X; j++) {
                 if (i == j && myTicTacToe[i][j] == symb) {
+                    flag = true;
+                } else {
+                    flag = false;
+                    checkUDLine = 0;
+                }
+                if (flag) {
                     checkUDLine++;
                 }
-                if (SIZE_Y - i - 1 == j && myTicTacToe[i][j] == symb) {
-                    checkDULine++;
+                if (checkUDLine >= SIZE_WIN) {
+                    return true;
                 }
+            }
+        }
+        return false;
+    }
+
+    private static boolean checkHLine(char symb) {
+        int checkHLine = 0;
+        boolean flag = false;
+        for (int i = 0; i < SIZE_Y; i++) {
+            for (int j = 0; j < SIZE_X; j++) {
                 if (myTicTacToe[i][j] == symb) {
+                    flag = true;
+                } else {
+                    flag = false;
+                    checkHLine = 0;
+                }
+                if (flag) {
                     checkHLine++;
                 }
-                if (myTicTacToe[j][i] == symb) {
-                    checkVLine++;
-                }
-                if (checkDULine >= SIZW_WIN || checkUDLine >= SIZW_WIN || checkHLine >= SIZW_WIN || checkVLine >= SIZW_WIN) {
+                if (checkHLine >= SIZE_WIN) {
                     return true;
                 }
             }
             checkHLine = 0;
+        }
+        return false;
+    }
+
+    private static boolean checkVLine(char symb) {
+        int checkVLine = 0;
+        boolean flag = false;
+        for (int i = 0; i < SIZE_Y; i++) {
+            for (int j = 0; j < SIZE_X; j++) {
+                if (myTicTacToe[j][i] == symb) {
+                    flag = true;
+                } else {
+                    flag = false;
+                    checkVLine = 0;
+                }
+                if (flag) {
+                    checkVLine++;
+                }
+                if (checkVLine >= SIZE_WIN) {
+                    return true;
+                }
+            }
             checkVLine = 0;
+        }
+        return false;
+    }
+
+    private static boolean checkWin(char symb) {
+        if (checkDULine(symb) || checkUDLine(symb) || checkHLine(symb) || checkVLine(symb)) {
+            return true;
         }
         return false;
     }
