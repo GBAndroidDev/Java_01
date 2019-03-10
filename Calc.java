@@ -21,7 +21,10 @@ public class Calc {
     }
 
     public static String[] cleanArray(String[] myArray) {
-        int count = 0;
+        int count = 0;/*
+        if (myArray[0].equals("*") || myArray[0].equals("+") || myArray[0].equals("/")) {
+            myArray[0] = "";
+        }*/
         for (String tmpStr: myArray) {
             if (!tmpStr.isEmpty()) {
                 count++;
@@ -66,27 +69,28 @@ public class Calc {
         return sc.nextLine();
     }
 
-    public static String[] mathOperation(String[] valuesArray, String operator) {
+    public static String[] mathOperation(String[] tmpArray, String operator) {
         double res = 0;
         int i = 0;
+        String[] valuesArray = cleanArray(tmpArray);
         //System.out.println(Arrays.toString(valuesArray));
         while (i < valuesArray.length) {
             if (valuesArray[i].equals(operator)) {
                 switch (operator) {
                     case "*":
-                        res = Double.parseDouble(valuesArray[i - 1]) * Double.parseDouble(valuesArray[i + 1]);
+                        res = doubleConvert(valuesArray[i - 1]) * doubleConvert(valuesArray[i + 1]);
                         break;
                     case "/":
-                        res = Double.parseDouble(valuesArray[i - 1]) / Double.parseDouble(valuesArray[i + 1]);
+                        res = doubleConvert(valuesArray[i - 1]) / doubleConvert(valuesArray[i + 1]);
                         break;
                     case "+":
-                        res = Double.parseDouble(valuesArray[i - 1]) + Double.parseDouble(valuesArray[i + 1]);
+                        res = doubleConvert(valuesArray[i - 1]) + doubleConvert(valuesArray[i + 1]);
                         break;
                     case "-":
                         if (i > 0) {
-                            res = Double.parseDouble(valuesArray[i - 1]) - Double.parseDouble(valuesArray[i + 1]);
+                            res = doubleConvert(valuesArray[i - 1]) - doubleConvert(valuesArray[i + 1]);
                         } else {
-                            res = Double.parseDouble(valuesArray[i + 1]) * (-1);
+                            res = doubleConvert(valuesArray[i + 1]) * (-1);
                         }
                 }
                 valuesArray[i] = Double.toString(res);
@@ -102,6 +106,10 @@ public class Calc {
             i++;
         }
         return valuesArray;
+    }
+
+    public static double doubleConvert(String symb) {
+        return Double.parseDouble(symb);
     }
 
     public static String calcWithPriority(String[] splittedArray) {
