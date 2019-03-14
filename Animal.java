@@ -9,17 +9,14 @@
         5. * Добавить животным разброс в ограничениях. То есть у одной собаки ограничение на бег
         может быть 400 м., у другой 600 м.*/
 
-public class Main {
-    public static void main(String[] args) {
-        Dog myDog, pugDog, shepherdDog;
-        Cat myCat;
-        myDog = new Dog(500,.5f,10);
-        System.out.println("run: " + myDog.run(300));
-        myCat = new Cat(200,2,0);
-        System.out.println("run: " + myCat.run(201));
+public class Animal {
+    int run_limit;
+    float jump_limit, swim_limit;
 
-        //Не очень понятно, что сделать в п.5. Создать несколько экземпляров собак с различными параметрами?
-        pugDog = new Dog(600,1,20);
-        shepherdDog = new Dog(400,.2f,5);
+    public boolean run(int run_value) {
+        if (run_value <= this.run_limit) return true;
+        return false;
     }
+
+
 }
