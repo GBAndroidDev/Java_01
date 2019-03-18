@@ -14,12 +14,8 @@ public class Main {
         Dog myDog, pugDog, shepherdDog;
         Cat myCat;
         myDog = new Dog(500,.5f,10);
-        System.out.println("run: " + myDog.run(300));
         myCat = new Cat(200,2,0);
-        System.out.println("run: " + myCat.run(201));
 
         //Не очень понятно, что сделать в п.5. Создать несколько экземпляров собак с различными параметрами?
-        pugDog = new Dog(600,1,20);
-        shepherdDog = new Dog(400,.2f,5);
     }
 }
