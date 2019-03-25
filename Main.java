@@ -1,1 +1,0 @@
-https://geekbrains.ru/users/606257
